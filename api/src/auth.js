@@ -25,17 +25,21 @@ class Auth {
   }
 
   async signin(req, res) {
+    
     let { password, email } = req.body;
     email = (email || "").trim().toLowerCase();
 
     if (!email || !password) return res.status(400).send({ ok: false, code: EMAIL_AND_PASSWORD_REQUIRED });
-
+    
     try {
+      
       const user = await this.model.findOne({ email });
       if (!user) return res.status(401).send({ ok: false, code: USER_NOT_EXISTS });
-
-      const match = true; //await user.comparePassword(password);
+     
+  
+      const match = await user.comparePassword(password);
       if (!match) return res.status(401).send({ ok: false, code: EMAIL_OR_PASSWORD_INVALID });
+  
 
       user.set({ last_login_at: Date.now() });
       await user.save();
@@ -48,6 +52,7 @@ class Auth {
       }
 
       const token = jwt.sign({ _id: user.id }, config.secret, { expiresIn: JWT_MAX_AGE });
+      console.log(token);
       res.cookie("jwt", token, cookieOptions);
 
       return res.status(200).send({ ok: true, token, user });

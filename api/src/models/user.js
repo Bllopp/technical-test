@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-const { Date } = require("mongoose");
+const { Date, model } = require("mongoose");
 
 const MODELNAME = "user";
 
@@ -13,7 +13,7 @@ const Schema = new mongoose.Schema({
   avatar: { type: String, default: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" },
   banner: { type: String, default: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" },
 
-  password: String,
+  password: {type: String, require: true},
 
   last_login_at: { type: Date, default: Date.now },
   created_at: { type: Date, default: Date.now },
@@ -33,19 +33,22 @@ const Schema = new mongoose.Schema({
   role: { type: String, enum: ["normal", "admin"], default: "normal" },
 });
 
+
 Schema.pre("save", function (next) {
-  if (this.isModified("password") || this.isNew) {
+ if (this.isNew || this.isModified('password')) {
     bcrypt.hash(this.password, 10, (e, hash) => {
       this.password = hash;
       return next();
     });
   } else {
     return next();
-  }
+ }
 });
 
-Schema.methods.comparePassword = function (p) {
-  return bcrypt.compare(p, this.password || "");
+
+Schema.methods.comparePassword = async function comparePassword(p) {
+  return match = await bcrypt.compare(p,this.password ||"")
 };
 const OBJ = mongoose.model(MODELNAME, Schema);
 module.exports = OBJ;
+

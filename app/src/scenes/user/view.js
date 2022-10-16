@@ -10,10 +10,12 @@ import api from "../../services/api";
 export default () => {
   const [user, setUser] = useState(null);
   const { id } = useParams();
+  
   useEffect(() => {
     (async () => {
-      console.log(data._id);
+      
       const { data } = await api.get(`/user/${id}`);
+      console.log(data);
       setUser(data);
     })();
   }, []);

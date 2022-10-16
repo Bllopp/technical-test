@@ -24,7 +24,7 @@ const ProgressBar = ({ percentage, max, value }) => {
         </div>
       </div>
       <div className="flex items-start justify-between text-sm">
-        <div className="px-2 text-xs">{value.toFixed(2)}€</div>
+        <div className="px-2 text-xs">{Number(value).toFixed(2)}€</div>
         <div className="px-2">{percentage.toFixed(2)}%</div>
         <div className="px-2 text-xs">{max}€</div>
       </div>

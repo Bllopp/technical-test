@@ -16,13 +16,17 @@ class api {
   }
 
   get(path) {
+  
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(`${apiURL}${path}`, {
           mode: "cors",
           method: "GET",
           credentials: "include",
-          headers: { "Content-Type": "application/json", Authorization: `JWT ${this.token}` },
+          headers: { "Content-Type": "application/json", 
+          Authorization: `JWT ${this.token}` 
+        },
+          
         });
 
         const res = await response.json();

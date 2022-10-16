@@ -18,7 +18,7 @@ module.exports = function (app) {
   opts.secretOrKey = secret;
 
   passport.use(
-    "admin",
+   "admin",
     new JwtStrategy(opts, async function (jwtPayload, done) {
       try {
         const user = await User.findOne({ _id: jwtPayload._id });

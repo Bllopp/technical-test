@@ -24,7 +24,10 @@ export default function ProjectView() {
   useEffect(() => {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
-      setProject(u);
+      console.log(u);
+      setProject(u[0]);
+      
+      
     })();
   }, []);
 
@@ -33,7 +36,7 @@ export default function ProjectView() {
       setTimeout(() => setCopied(false), 3000);
     }
   }, [copied]);
-
+  
   if (!project) return <Loader />;
 
   return (
@@ -114,7 +117,7 @@ const Budget = ({ project }) => {
     })();
   }, []);
 
-  const total = activities.reduce((acc, cur) => acc + cur, 0);
+  const total = activities.reduce((acc, cur) => acc + cur.value, 0);
   const budget_max_monthly = project.budget_max_monthly;
   const width = (100 * total) / budget_max_monthly || 0;
 
@@ -266,7 +269,7 @@ const Links = ({ project }) => {
           </a>
         </div>
       )}
-      {project.links.map((link) => (
+      {project.links?.map((link) => (
         <div className="group text-sm font-medium	text-blue-700 border-[1px] border-blue-700 rounded-full overflow-hidden">
           <a target="blank" href={link.url} className="break-words cursor-pointer text-blue-700 hover:text-white hover:bg-blue-700 flex hover:no-underline h-full">
             <div className="flex items-center bg-blue-700 py-1 px-2 rounded-r-full ">

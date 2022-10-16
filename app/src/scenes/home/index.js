@@ -3,6 +3,7 @@ import api from "../../services/api";
 
 const Home = () => {
   const [availableUsers, setAvailableUsers] = useState();
+  
 
   async function getUser() {
     const { data } = await api.get("/user/available");
@@ -32,4 +33,6 @@ const Home = () => {
     </div>
   );
 };
+
 export default Home;
+
