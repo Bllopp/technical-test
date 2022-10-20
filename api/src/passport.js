@@ -22,7 +22,7 @@ module.exports = function (app) {
     new JwtStrategy(opts, async function (jwtPayload, done) {
       try {
         const user = await User.findOne({ _id: jwtPayload._id });
-        if (user && user.role === "admin") return done(null, user);
+        if (user && user.role === "admin" || "normal") return done(null, user);
       } catch (error) {
         capture(error);
       }
